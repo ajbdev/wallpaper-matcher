@@ -31,7 +31,7 @@ export default class Matcher {
   }
 
   async match() {
-    this.sets.map(async buffers => this.getColorPalettes(buffers));
+    await Promise.all(this.sets.map(async buffers => this.getColorPalettes(buffers)));
   }
 
   setLibrary(lib: 'node-vibrant' | 'colorthief' | 'get-image-colors') {

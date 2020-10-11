@@ -4,7 +4,7 @@ import GetImageColors from 'get-image-colors';
 
 const ColorThief = require('colorthief');
 
-const inBrowser = typeof window === 'object' && window instanceof Window;
+//const inBrowser = typeof window === 'object' && window instanceof Window;
 
 export enum Drivers {
   GetImageColors,
@@ -13,21 +13,22 @@ export enum Drivers {
 }
 
 
+
 export interface Driver {
-  getPalette(buffer: HTMLImageElement | Buffer): Promise<Color[]>
+  getPalette<T extends string>(src: T): Promise<Color[]>
 }
 
 class ColorThiefDriver implements Driver {
-  getPalette(buffer: HTMLImageElement | Buffer): Promise<Color[]> {
-    const result = ColorThief.getPalette(buffer, 6);
+  async getPalette<T extends string>(src: T): Promise<Color[]> {
+    const result = await ColorThief.getPalette(src, 6);
 
     return result.map((r:any) => Color.rgb(r[0], r[1], r[2]));
   }
 }
 
 class VibrantDriver implements Driver {
-  async getPalette(buffer: HTMLImageElement | Buffer): Promise<Color[]> {
-    const result = await Vibrant.from(buffer).getPalette();
+  async getPalette<T extends string>(src: T): Promise<Color[]> {
+    const result = await Vibrant.from(src).getPalette();
 
     return ['Vibrant','Muted','DarkVibrant','DarkMuted','LightVibrant','LightMuted']
                     .filter(p => result.hasOwnProperty(p))
@@ -36,8 +37,8 @@ class VibrantDriver implements Driver {
 }
 
 class GetImageColorsDriver implements Driver {
-  async getPalette(buffer: string): Promise<Color[]> {
-    const result = await GetImageColors(buffer);
+  async getPalette<T extends string>(src: T): Promise<Color[]> {
+    const result = await GetImageColors(src);
 
     return result.map(r => Color.rgb(...r.rgb()));
   }
@@ -61,7 +62,7 @@ export default class {
     }
   }
 
-  getPalette(buffer: HTMLImageElement | Buffer | Uint8Array | ArrayBuffer | string): Promise<Color[]> {
-    return this.driver.getPalette(buffer);
+  getPalette(src: string) {
+    return this.driver.getPalette(src);
   }
 }

@@ -101,10 +101,14 @@ var Matcher = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
-                this.sets.map(function (buffers) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
-                    return [2 /*return*/, this.getColorPalettes(buffers)];
-                }); }); });
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Promise.all(this.sets.map(function (buffers) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                            return [2 /*return*/, this.getColorPalettes(buffers)];
+                        }); }); }))];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
             });
         });
     };

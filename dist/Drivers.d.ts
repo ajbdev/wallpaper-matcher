@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { Color } from './Palette';
 export declare enum Drivers {
     GetImageColors = 0,
@@ -6,10 +5,10 @@ export declare enum Drivers {
     ColorThief = 2
 }
 export interface Driver {
-    getPalette(buffer: HTMLImageElement | Buffer): Promise<Color[]>;
+    getPalette<T extends string>(src: T): Promise<Color[]>;
 }
 export default class {
     driver: Driver;
     constructor(driverType: Drivers);
-    getPalette(buffer: HTMLImageElement | Buffer | Uint8Array | ArrayBuffer | string): Promise<Color[]>;
+    getPalette(src: string): Promise<Color[]>;
 }

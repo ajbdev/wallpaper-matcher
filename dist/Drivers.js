@@ -44,7 +44,7 @@ var Palette_1 = require("./Palette");
 var node_vibrant_1 = __importDefault(require("node-vibrant"));
 var get_image_colors_1 = __importDefault(require("get-image-colors"));
 var ColorThief = require('colorthief');
-var inBrowser = typeof window === 'object' && window instanceof Window;
+//const inBrowser = typeof window === 'object' && window instanceof Window;
 var Drivers;
 (function (Drivers) {
     Drivers[Drivers["GetImageColors"] = 0] = "GetImageColors";
@@ -54,21 +54,30 @@ var Drivers;
 var ColorThiefDriver = /** @class */ (function () {
     function ColorThiefDriver() {
     }
-    ColorThiefDriver.prototype.getPalette = function (buffer) {
-        var result = ColorThief.getPalette(buffer, 6);
-        return result.map(function (r) { return Palette_1.Color.rgb(r[0], r[1], r[2]); });
+    ColorThiefDriver.prototype.getPalette = function (src) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, ColorThief.getPalette(src, 6)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, result.map(function (r) { return Palette_1.Color.rgb(r[0], r[1], r[2]); })];
+                }
+            });
+        });
     };
     return ColorThiefDriver;
 }());
 var VibrantDriver = /** @class */ (function () {
     function VibrantDriver() {
     }
-    VibrantDriver.prototype.getPalette = function (buffer) {
+    VibrantDriver.prototype.getPalette = function (src) {
         return __awaiter(this, void 0, void 0, function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, node_vibrant_1.default.from(buffer).getPalette()];
+                    case 0: return [4 /*yield*/, node_vibrant_1.default.from(src).getPalette()];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, ['Vibrant', 'Muted', 'DarkVibrant', 'DarkMuted', 'LightVibrant', 'LightMuted']
@@ -83,12 +92,12 @@ var VibrantDriver = /** @class */ (function () {
 var GetImageColorsDriver = /** @class */ (function () {
     function GetImageColorsDriver() {
     }
-    GetImageColorsDriver.prototype.getPalette = function (buffer) {
+    GetImageColorsDriver.prototype.getPalette = function (src) {
         return __awaiter(this, void 0, void 0, function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, get_image_colors_1.default(buffer)];
+                    case 0: return [4 /*yield*/, get_image_colors_1.default(src)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.map(function (r) { return Palette_1.Color.rgb.apply(Palette_1.Color, r.rgb()); })];
@@ -112,8 +121,8 @@ var default_1 = /** @class */ (function () {
                 break;
         }
     }
-    default_1.prototype.getPalette = function (buffer) {
-        return this.driver.getPalette(buffer);
+    default_1.prototype.getPalette = function (src) {
+        return this.driver.getPalette(src);
     };
     return default_1;
 }());

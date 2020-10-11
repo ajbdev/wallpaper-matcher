@@ -13,10 +13,8 @@ const { glob } = require('glob');
     return glob.sync(p) 
   }));
 
-  const matcher = new Matcher(files);
+  const matcher = new Matcher(...files);
 
   const results = await matcher.match();
-
-  // console.log(results);
 })();
 
