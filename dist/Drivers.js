@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -37,93 +38,83 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Drivers = void 0;
+var Palette_1 = require("./Palette");
+var node_vibrant_1 = __importDefault(require("node-vibrant"));
+var get_image_colors_1 = __importDefault(require("get-image-colors"));
+var ColorThief = require('colorthief');
+var inBrowser = typeof window === 'object' && window instanceof Window;
+var Drivers;
+(function (Drivers) {
+    Drivers[Drivers["GetImageColors"] = 0] = "GetImageColors";
+    Drivers[Drivers["Vibrant"] = 1] = "Vibrant";
+    Drivers[Drivers["ColorThief"] = 2] = "ColorThief";
+})(Drivers = exports.Drivers || (exports.Drivers = {}));
+var ColorThiefDriver = /** @class */ (function () {
+    function ColorThiefDriver() {
     }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./Palette", "node-vibrant", "get-image-colors"], factory);
+    ColorThiefDriver.prototype.getPalette = function (buffer) {
+        var result = ColorThief.getPalette(buffer, 6);
+        return result.map(function (r) { return Palette_1.Color.rgb(r[0], r[1], r[2]); });
+    };
+    return ColorThiefDriver;
+}());
+var VibrantDriver = /** @class */ (function () {
+    function VibrantDriver() {
     }
-})(function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.Drivers = void 0;
-    var Palette_1 = require("./Palette");
-    var node_vibrant_1 = __importDefault(require("node-vibrant"));
-    var get_image_colors_1 = __importDefault(require("get-image-colors"));
-    var ColorThief = require('colorthief');
-    var Drivers;
-    (function (Drivers) {
-        Drivers[Drivers["GetImageColors"] = 0] = "GetImageColors";
-        Drivers[Drivers["Vibrant"] = 1] = "Vibrant";
-        Drivers[Drivers["ColorThief"] = 2] = "ColorThief";
-    })(Drivers = exports.Drivers || (exports.Drivers = {}));
-    var ColorThiefDriver = /** @class */ (function () {
-        function ColorThiefDriver() {
-        }
-        ColorThiefDriver.prototype.getPalette = function (buffer) {
-            var result = ColorThief.getPalette(buffer, 6);
-            return result.map(function (r) { return Palette_1.Color.rgb(r[0], r[1], r[2]); });
-        };
-        return ColorThiefDriver;
-    }());
-    var VibrantDriver = /** @class */ (function () {
-        function VibrantDriver() {
-        }
-        VibrantDriver.prototype.getPalette = function (buffer) {
-            return __awaiter(this, void 0, void 0, function () {
-                var result;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, node_vibrant_1.default.from(buffer).getPalette()];
-                        case 1:
-                            result = _a.sent();
-                            return [2 /*return*/, ['Vibrant', 'Muted', 'DarkVibrant', 'DarkMuted', 'LightVibrant', 'LightMuted']
-                                    .filter(function (p) { return result.hasOwnProperty(p); })
-                                    .map(function (p) { return Palette_1.Color.rgb(result[p].r, result[p].g, result[p].b); })];
-                    }
-                });
+    VibrantDriver.prototype.getPalette = function (buffer) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, node_vibrant_1.default.from(buffer).getPalette()];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, ['Vibrant', 'Muted', 'DarkVibrant', 'DarkMuted', 'LightVibrant', 'LightMuted']
+                                .filter(function (p) { return result.hasOwnProperty(p); })
+                                .map(function (p) { return Palette_1.Color.rgb(result[p].r, result[p].g, result[p].b); })];
+                }
             });
-        };
-        return VibrantDriver;
-    }());
-    var GetImageColorsDriver = /** @class */ (function () {
-        function GetImageColorsDriver() {
-        }
-        GetImageColorsDriver.prototype.getPalette = function (buffer) {
-            return __awaiter(this, void 0, void 0, function () {
-                var result;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, get_image_colors_1.default(buffer)];
-                        case 1:
-                            result = _a.sent();
-                            return [2 /*return*/, result.map(function (r) { return Palette_1.Color.rgb.apply(Palette_1.Color, r.rgb()); })];
-                    }
-                });
+        });
+    };
+    return VibrantDriver;
+}());
+var GetImageColorsDriver = /** @class */ (function () {
+    function GetImageColorsDriver() {
+    }
+    GetImageColorsDriver.prototype.getPalette = function (buffer) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, get_image_colors_1.default(buffer)];
+                    case 1:
+                        result = _a.sent();
+                        return [2 /*return*/, result.map(function (r) { return Palette_1.Color.rgb.apply(Palette_1.Color, r.rgb()); })];
+                }
             });
-        };
-        return GetImageColorsDriver;
-    }());
-    var default_1 = /** @class */ (function () {
-        function default_1(driverType) {
-            switch (driverType) {
-                case Drivers.GetImageColors:
-                    this.driver = new GetImageColorsDriver();
-                    break;
-                case Drivers.Vibrant:
-                    this.driver = new VibrantDriver();
-                    break;
-                case Drivers.ColorThief:
-                    this.driver = new ColorThiefDriver();
-                    break;
-            }
+        });
+    };
+    return GetImageColorsDriver;
+}());
+var default_1 = /** @class */ (function () {
+    function default_1(driverType) {
+        switch (driverType) {
+            case Drivers.GetImageColors:
+                this.driver = new GetImageColorsDriver();
+                break;
+            case Drivers.Vibrant:
+                this.driver = new VibrantDriver();
+                break;
+            case Drivers.ColorThief:
+                this.driver = new ColorThiefDriver();
+                break;
         }
-        default_1.prototype.getPalette = function (buffer) {
-            return this.driver.getPalette(buffer);
-        };
-        return default_1;
-    }());
-    exports.default = default_1;
-});
+    }
+    default_1.prototype.getPalette = function (buffer) {
+        return this.driver.getPalette(buffer);
+    };
+    return default_1;
+}());
+exports.default = default_1;

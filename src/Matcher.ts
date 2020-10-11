@@ -1,35 +1,37 @@
 import Driver, { Drivers } from './Drivers';
+import {Color} from './Palette';
+
+interface BufferPalette {
+  [key:string]: Color[]
+}
 
 export default class Matcher {
   driver: Driver;
   sets: string[][];
+  palettes: BufferPalette;
 
   constructor(...sets: string[][]) {
-    this.driver = new Driver(Drivers.Vibrant);
+    this.driver = new Driver(Drivers.ColorThief);
 
     this.sets = sets;
+    this.palettes = {}
+  }
+
+  async getColorPalette(buffer: string) {
+    this.palettes[buffer] = await this.driver.getPalette(buffer);
+
+    return this.palettes[buffer];
   }
 
 
   async getColorPalettes(buffers: string[]) {
-    return await Promise.all(buffers.map(async buffer => { 
-      const palette = await this.driver.getPalette(buffer);
-    
-      return {
-        buffer: buffer,
-        palette: palette
-      }
-    }));
+    await Promise.all(buffers.map(async buffer => this.getColorPalette(buffer)));
+
+    return this.palettes;
   }
 
   async match() {
-    const sets = await Promise.all(
-      this.sets.map((buffers: string[]) => {
-        return this.getColorPalettes(buffers);
-      })
-    )
-
-    console.log(sets);
+    this.sets.map(async buffers => this.getColorPalettes(buffers));
   }
 
   setLibrary(lib: 'node-vibrant' | 'colorthief' | 'get-image-colors') {

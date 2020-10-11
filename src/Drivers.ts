@@ -4,18 +4,21 @@ import GetImageColors from 'get-image-colors';
 
 const ColorThief = require('colorthief');
 
+const inBrowser = typeof window === 'object' && window instanceof Window;
+
 export enum Drivers {
   GetImageColors,
   Vibrant,
   ColorThief
 }
 
+
 export interface Driver {
-  getPalette(buffer: HTMLImageElement | Buffer | Uint8Array | ArrayBuffer | string): Promise<Color[]>
+  getPalette(buffer: HTMLImageElement | Buffer): Promise<Color[]>
 }
 
 class ColorThiefDriver implements Driver {
-  getPalette(buffer: HTMLImageElement | string): Promise<Color[]> {
+  getPalette(buffer: HTMLImageElement | Buffer): Promise<Color[]> {
     const result = ColorThief.getPalette(buffer, 6);
 
     return result.map((r:any) => Color.rgb(r[0], r[1], r[2]));

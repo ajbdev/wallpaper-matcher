@@ -6,7 +6,7 @@ export declare enum Drivers {
     ColorThief = 2
 }
 export interface Driver {
-    getPalette(buffer: HTMLImageElement | Buffer | Uint8Array | ArrayBuffer | string): Promise<Color[]>;
+    getPalette(buffer: HTMLImageElement | Buffer): Promise<Color[]>;
 }
 export default class {
     driver: Driver;

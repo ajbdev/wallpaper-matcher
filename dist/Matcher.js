@@ -1,3 +1,4 @@
+"use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
@@ -53,76 +54,67 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-(function (factory) {
-    if (typeof module === "object" && typeof module.exports === "object") {
-        var v = factory(require, exports);
-        if (v !== undefined) module.exports = v;
-    }
-    else if (typeof define === "function" && define.amd) {
-        define(["require", "exports", "./Drivers"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    Object.defineProperty(exports, "__esModule", { value: true });
-    var Drivers_1 = __importStar(require("./Drivers"));
-    var Matcher = /** @class */ (function () {
-        function Matcher() {
-            var sets = [];
-            for (var _i = 0; _i < arguments.length; _i++) {
-                sets[_i] = arguments[_i];
-            }
-            this.driver = new Drivers_1.default(Drivers_1.Drivers.Vibrant);
-            this.sets = sets;
+Object.defineProperty(exports, "__esModule", { value: true });
+var Drivers_1 = __importStar(require("./Drivers"));
+var Matcher = /** @class */ (function () {
+    function Matcher() {
+        var sets = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            sets[_i] = arguments[_i];
         }
-        Matcher.prototype.getColorPalettes = function (buffers) {
-            return __awaiter(this, void 0, void 0, function () {
-                var _this = this;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, Promise.all(buffers.map(function (buffer) { return __awaiter(_this, void 0, void 0, function () {
-                                var palette;
-                                return __generator(this, function (_a) {
-                                    switch (_a.label) {
-                                        case 0: return [4 /*yield*/, this.driver.getPalette(buffer)];
-                                        case 1:
-                                            palette = _a.sent();
-                                            return [2 /*return*/, {
-                                                    buffer: buffer,
-                                                    palette: palette
-                                                }];
-                                    }
-                                });
-                            }); }))];
-                        case 1: return [2 /*return*/, _a.sent()];
-                    }
-                });
+        this.driver = new Drivers_1.default(Drivers_1.Drivers.ColorThief);
+        this.sets = sets;
+        this.palettes = {};
+    }
+    Matcher.prototype.getColorPalette = function (buffer) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        _a = this.palettes;
+                        _b = buffer;
+                        return [4 /*yield*/, this.driver.getPalette(buffer)];
+                    case 1:
+                        _a[_b] = _c.sent();
+                        return [2 /*return*/, this.palettes[buffer]];
+                }
             });
-        };
-        Matcher.prototype.match = function () {
-            return __awaiter(this, void 0, void 0, function () {
-                var sets;
-                var _this = this;
-                return __generator(this, function (_a) {
-                    switch (_a.label) {
-                        case 0: return [4 /*yield*/, Promise.all(this.sets.map(function (buffers) {
-                                return _this.getColorPalettes(buffers);
-                            }))];
-                        case 1:
-                            sets = _a.sent();
-                            console.log(sets);
-                            return [2 /*return*/];
-                    }
-                });
+        });
+    };
+    Matcher.prototype.getColorPalettes = function (buffers) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, Promise.all(buffers.map(function (buffer) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                            return [2 /*return*/, this.getColorPalette(buffer)];
+                        }); }); }))];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, this.palettes];
+                }
             });
-        };
-        Matcher.prototype.setLibrary = function (lib) {
-            this.driver = new Drivers_1.default({
-                'node-vibrant': Drivers_1.Drivers.Vibrant,
-                'colorthief': Drivers_1.Drivers.ColorThief,
-                'get-image-colors': Drivers_1.Drivers.GetImageColors
-            }[lib]);
-        };
-        return Matcher;
-    }());
-    exports.default = Matcher;
-});
+        });
+    };
+    Matcher.prototype.match = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this.sets.map(function (buffers) { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                    return [2 /*return*/, this.getColorPalettes(buffers)];
+                }); }); });
+                return [2 /*return*/];
+            });
+        });
+    };
+    Matcher.prototype.setLibrary = function (lib) {
+        this.driver = new Drivers_1.default({
+            'node-vibrant': Drivers_1.Drivers.Vibrant,
+            'colorthief': Drivers_1.Drivers.ColorThief,
+            'get-image-colors': Drivers_1.Drivers.GetImageColors
+        }[lib]);
+    };
+    return Matcher;
+}());
+exports.default = Matcher;
