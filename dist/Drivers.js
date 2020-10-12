@@ -43,7 +43,7 @@ exports.Drivers = void 0;
 var Palette_1 = require("./Palette");
 var node_vibrant_1 = __importDefault(require("node-vibrant"));
 var get_image_colors_1 = __importDefault(require("get-image-colors"));
-var ColorThief = require('colorthief');
+var ColorThief = require('colorthief').default;
 //const inBrowser = typeof window === 'object' && window instanceof Window;
 var Drivers;
 (function (Drivers) {
@@ -59,7 +59,9 @@ var ColorThiefDriver = /** @class */ (function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, ColorThief.getPalette(src, 6)];
+                    case 0:
+                        console.log(ColorThief);
+                        return [4 /*yield*/, ColorThief.getPalette(src, 6)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.map(function (r) { return Palette_1.Color.rgb(r[0], r[1], r[2]); })];

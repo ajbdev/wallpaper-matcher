@@ -2,7 +2,7 @@ import {Color} from './Palette';
 import Vibrant from 'node-vibrant';
 import GetImageColors from 'get-image-colors';
 
-const ColorThief = require('colorthief');
+const ColorThief = require('colorthief').default;
 
 //const inBrowser = typeof window === 'object' && window instanceof Window;
 
@@ -18,6 +18,7 @@ export interface Driver {
 
 class ColorThiefDriver implements Driver {
   async getPalette<T extends string>(src: T): Promise<Color[]> {
+    console.log(ColorThief);
     const result = await ColorThief.getPalette(src, 6);
 
     return result.map((r:any) => Color.rgb(r[0], r[1], r[2]));
