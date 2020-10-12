@@ -16,5 +16,7 @@ const { glob } = require('glob');
   const matcher = new Matcher(...files);
 
   const results = await matcher.match();
+
+  console.log(matcher.palettes);
 })();
 

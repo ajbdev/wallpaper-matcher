@@ -12,8 +12,6 @@ export enum Drivers {
   ColorThief
 }
 
-
-
 export interface Driver {
   getPalette<T extends string>(src: T): Promise<Color[]>
 }

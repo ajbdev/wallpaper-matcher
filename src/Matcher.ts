@@ -6,9 +6,9 @@ interface BufferPalette {
 }
 
 export default class Matcher {
-  driver: Driver;
-  sets: string[][];
-  palettes: BufferPalette;
+  private driver: Driver;
+  readonly sets: string[][];
+  readonly palettes: BufferPalette;
 
   constructor(...sets: string[][]) {
     this.driver = new Driver(Drivers.ColorThief);

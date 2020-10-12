@@ -1,12 +1,11 @@
-import Driver from './Drivers';
 import { Color } from './Palette';
 interface BufferPalette {
     [key: string]: Color[];
 }
 export default class Matcher {
-    driver: Driver;
-    sets: string[][];
-    palettes: BufferPalette;
+    private driver;
+    readonly sets: string[][];
+    readonly palettes: BufferPalette;
     constructor(...sets: string[][]);
     getColorPalette(buffer: string): Promise<Color[]>;
     getColorPalettes(buffers: string[]): Promise<BufferPalette>;
