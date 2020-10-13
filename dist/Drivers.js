@@ -53,15 +53,14 @@ var Drivers;
 })(Drivers = exports.Drivers || (exports.Drivers = {}));
 var ColorThiefDriver = /** @class */ (function () {
     function ColorThiefDriver() {
+        this.cf = new ColorThief();
     }
     ColorThiefDriver.prototype.getPalette = function (src) {
         return __awaiter(this, void 0, void 0, function () {
             var result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        console.log(ColorThief);
-                        return [4 /*yield*/, ColorThief.getPalette(src, 6)];
+                    case 0: return [4 /*yield*/, this.cf.getPalette(src, 6)];
                     case 1:
                         result = _a.sent();
                         return [2 /*return*/, result.map(function (r) { return Palette_1.Color.rgb(r[0], r[1], r[2]); })];

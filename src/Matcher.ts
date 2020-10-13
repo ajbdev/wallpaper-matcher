@@ -17,6 +17,10 @@ export default class Matcher {
     this.palettes = {}
   }
 
+  addSet(set: string[]) {
+    this.sets.push(set);
+  }
+
   async getColorPalette(buffer: string) {
     this.palettes[buffer] = await this.driver.getPalette(buffer);
 

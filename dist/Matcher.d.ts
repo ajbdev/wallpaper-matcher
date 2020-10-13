@@ -7,6 +7,7 @@ export default class Matcher {
     readonly sets: string[][];
     readonly palettes: BufferPalette;
     constructor(...sets: string[][]);
+    addSet(set: string[]): void;
     getColorPalette(buffer: string): Promise<Color[]>;
     getColorPalettes(buffers: string[]): Promise<BufferPalette>;
     match(): Promise<void>;

@@ -8,3 +8,10 @@ body {
 .wallpaper {
   max-width: 150px;
 }
+
+.color {
+  width: 25px;
+  height: 25px;
+  display: inline-block;
+  margin-left: 4px;
+}

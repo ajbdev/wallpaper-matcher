@@ -66,6 +66,9 @@ var Matcher = /** @class */ (function () {
         this.sets = sets;
         this.palettes = {};
     }
+    Matcher.prototype.addSet = function (set) {
+        this.sets.push(set);
+    };
     Matcher.prototype.getColorPalette = function (buffer) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, _b;

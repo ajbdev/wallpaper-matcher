@@ -17,9 +17,13 @@ export interface Driver {
 }
 
 class ColorThiefDriver implements Driver {
+  private cf: any;
+  constructor() {
+    this.cf = new ColorThief();
+  }
+
   async getPalette<T extends string>(src: T): Promise<Color[]> {
-    console.log(ColorThief);
-    const result = await ColorThief.getPalette(src, 6);
+    const result = await this.cf.getPalette(src, 6);
 
     return result.map((r:any) => Color.rgb(r[0], r[1], r[2]));
   }
